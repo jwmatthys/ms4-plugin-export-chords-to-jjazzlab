@@ -4,9 +4,11 @@ import FileIO
 
 MuseScore {
     id: plugin
-    menuPath: "Plugins.Export Chord Symbols"
-    description: "Export chord symbols from selection to grid-based text format"
+    menuPath: "Export Chords to Textfile"
+    description: "Export chord symbols from selection to grid-based text format compatible with JJazzLab or ChordPulse."
+    categoryCode: "Export"
     version: "1.0"
+    thumbnailName: "export_to_jjazzlab.png"
     requiresScore: true
 
     property var chordData: []
@@ -35,6 +37,11 @@ MuseScore {
     function collectData() {
         chordData = []
         barlineTicks = []
+        
+        // Select all if nothing selected
+        if (curScore.selection.elements.length === 0) {
+            cmd("select-all")
+        }
         
         var startTick = 0
         var endTick = curScore.lastSegment.tick
@@ -194,19 +201,7 @@ MuseScore {
     }
     
     function getOutputPath() {
-        var path = curScore.path
-        
-        if (path && path.length > 0) {
-            // Remove the file extension
-            var lastDot = path.lastIndexOf(".")
-            if (lastDot > 0) {
-                path = path.substring(0, lastDot)
-            }
-            return path + "_chords.txt"
-        }
-        
-        // Fallback to Documents folder if no path
-        var scoreName = curScore.scoreName
+        var scoreName = curScore.scoreName || "chords"
         var lastDot = scoreName.lastIndexOf(".")
         if (lastDot > 0) {
             scoreName = scoreName.substring(0, lastDot)
