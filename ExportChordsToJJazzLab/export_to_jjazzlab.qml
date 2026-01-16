@@ -4,7 +4,7 @@ import FileIO
 
 MuseScore {
     id: plugin
-    menuPath: "Export Chords to Textfile"
+    title: "Export Chords to Textfile"
     description: "Export chord symbols from selection to grid-based text format compatible with JJazzLab or ChordPulse."
     categoryCode: "Export"
     version: "1.0"
